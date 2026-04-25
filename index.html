@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=10" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
@@ -50,13 +50,22 @@
       <!-- Video Wrapper -->
       <div class="video-wrapper animate-in" id="video-wrapper">
         <div class="video-container" id="video-container">
+          <div class="video-placeholder" id="video-placeholder">
+            <div class="play-btn-ring">
+              <button class="play-btn" id="play-btn" aria-label="Play video">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </button>
+            </div>
+            <p class="play-label">Click here to watch</p>
+          </div>
           <!-- Actual video -->
-          <iframe id="vsl-video" src="https://www.youtube-nocookie.com/embed/wh7pAz1MuoQ?rel=0&modestbranding=1" 
+          <iframe id="vsl-video" src="https://www.youtube.com/embed/F6aClmbUFk8?rel=0&modestbranding=1" 
                   title="YouTube video player" frameborder="0" 
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  referrerpolicy="strict-origin-when-cross-origin"
                   allowfullscreen 
-                  style="width:100%; height:100%; border-radius: 16px; object-fit: cover; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);">
+                  style="display:none; width:100%; height:100%; border-radius: 16px; object-fit: cover;">
           </iframe>
         </div>
       </div>
@@ -197,14 +206,6 @@
           <summary>¿Esto es para mí si tengo 0 experiencia en el gym?</summary>
           <p>Sí, porque empezar sin una guía clara es precisamente lo que lleva a la mayoría a estancarse desde el inicio. El enfoque está pensado para darte estructura desde cero, evitando errores comunes y construyendo una base sólida para que progreses de forma correcta desde el principio.</p>
         </details>
-        <details class="faq-item animate-in" id="faq-4">
-          <summary>¿Por que Julián Ramos, y no otro Coach Fitness?</summary>
-          <p>Porque esto no es fitness tradicional. Julián ha vivido en primera persona lo que es entrenar estando ocupado y no ver cambios reales, entendiendo que el problema no es la disciplina, sino seguir métodos que no están diseñados para tu cuerpo ni para tu estilo de vida. Por eso trabaja con un sistema diseñado optimizando tu tiempo, tu energía y tu progreso para que puedas ver resultados sin tener que vivir dentro del gimnasio.</p>
-        </details>
-        <details class="faq-item animate-in" id="faq-5">
-          <summary>¿Qué pasa si no obtengo resultados?</summary>
-          <p>Si aplicas el sistema correctamente, los resultados llegan, porque todo está diseñado en base a cómo responde tu cuerpo y no en métodos genéricos. Se te evaluará tu caso para asegurarnos de que realmente eres un buen candidato. Aquí no se trata de probar cosas al azar, sino de seguir un sistema claro que te permita progresar sin perder tiempo.</p>
-        </details>
       </div>
     </section>
   </main>
@@ -212,14 +213,14 @@
   <!-- ───── STICKY MOBILE CTA ───── -->
   <div class="sticky-cta" id="sticky-cta">
     <a href="onboarding.html" class="cta-btn cta-btn-sticky" id="cta-btn-sticky">
-      <span class="cta-text">Agenda Tu Llamada Gratuita</span>
+      <span class="cta-text">Get My Free Strategy Call</span>
       <span class="cta-arrow">→</span>
     </a>
   </div>
 
   <!-- ───── FOOTER ───── -->
   <footer class="site-footer" id="site-footer">
-    <p>&copy; 2026 Exodus Growth — Julian Ramos. Todos los derechos reservados.</p>
+    <p>&copy; 2026 Exodus Growth — Julian Ramos. All rights reserved.</p>
   </footer>
 
   <script src="script.js"></script>
