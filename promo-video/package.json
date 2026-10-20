@@ -1,0 +1,17 @@
+{
+  "name": "exodus-promo-video",
+  "private": true,
+  "scripts": {
+    "audio": "node scripts/make-audio.mjs",
+    "studio": "remotion studio",
+    "render": "remotion render ExodusPromo Renders/exodus-promo.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.537",
+    "@types/react": "^18.3.31",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.537",
+    "typescript": "^7.0.2"
+  }
+}
