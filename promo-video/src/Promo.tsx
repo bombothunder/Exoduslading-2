@@ -11,6 +11,7 @@ import {
   useVideoConfig,
   Easing,
 } from "remotion";
+import { clamp, sec, useExit, useShake, useStamp } from "./anim";
 
 // Paleta y tipografía tomadas de la landing (styles.css)
 const C = {
@@ -24,9 +25,6 @@ const C = {
 };
 const FONT = "'Inter', -apple-system, sans-serif";
 const GRADIENT = `linear-gradient(135deg, ${C.cyan} 0%, ${C.blue} 50%, ${C.sky} 100%)`;
-
-const sec = (s: number) => Math.round(s * 30);
-const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
 const GradientText: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({
   children,
@@ -78,41 +76,6 @@ const Orbs: React.FC = () => {
       />
     </AbsoluteFill>
   );
-};
-
-// Golpe de "sello": escala de grande a normal con un leve sacudón
-const useStamp = (at: number) => {
-  const f = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const s = spring({ frame: f - at, fps, config: { damping: 12, stiffness: 220, mass: 0.6 } });
-  return {
-    opacity: interpolate(f, [at, at + 3], [0, 1], clamp),
-    transform: `scale(${interpolate(s, [0, 1], [2.2, 1])})`,
-  };
-};
-
-const useShake = (hits: number[]) => {
-  const f = useCurrentFrame();
-  let x = 0;
-  let y = 0;
-  for (const h of hits) {
-    const d = f - h;
-    if (d >= 0 && d < 10) {
-      const a = (1 - d / 10) * 14;
-      x += Math.sin(d * 3.1) * a;
-      y += Math.cos(d * 2.3) * a;
-    }
-  }
-  return `translate(${x}px, ${y}px)`;
-};
-
-// Salida común de cada escena
-const useExit = (dur: number, len = 8) => {
-  const f = useCurrentFrame();
-  return {
-    opacity: interpolate(f, [dur - len, dur], [1, 0], clamp),
-    filter: `blur(${interpolate(f, [dur - len, dur], [0, 18], clamp)}px)`,
-  };
 };
 
 const headline: React.CSSProperties = {

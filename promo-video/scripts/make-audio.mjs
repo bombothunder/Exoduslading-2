@@ -1,6 +1,37 @@
 // Genera la música y los efectos de sonido del promo 100% con código (síntesis).
-// Salida: public/soundtrack.wav (20 s, 44.1 kHz, estéreo, 16 bit)
+// Uso: node scripts/make-audio.mjs [exodus|digitaiflow]
+// Salida: public/<archivo del preset> (20 s, 44.1 kHz, estéreo, 16 bit)
 import { writeFileSync } from "node:fs";
+
+// Cada marca tiene su propia progresión y detalles; la estructura de tiempos es la misma.
+const PRESETS = {
+  exodus: {
+    out: "soundtrack.wav",
+    // La menor: Am – F – C – G
+    chords: [
+      { root: 33, pad: [57, 60, 64] },
+      { root: 29, pad: [57, 60, 65] },
+      { root: 36, pad: [55, 60, 64] },
+      { root: 31, pad: [55, 59, 62] },
+    ],
+    arp: false,
+    toasts: [],
+  },
+  digitaiflow: {
+    out: "soundtrack-digitaiflow.wav",
+    // Re menor: Dm – Bb – F – C, con arpegio en semicorcheas más "tech"
+    chords: [
+      { root: 38, pad: [62, 65, 69] },
+      { root: 34, pad: [62, 65, 70] },
+      { root: 41, pad: [60, 65, 69] },
+      { root: 36, pad: [60, 64, 67] },
+    ],
+    arp: true,
+    toasts: [11.9, 12.8, 13.7], // notificaciones de "llamada agendada"
+  },
+};
+const P = PRESETS[process.argv[2] ?? "exodus"];
+if (!P) throw new Error(`Preset desconocido: ${process.argv[2]}`);
 
 const SR = 44100;
 const DUR = 20;
@@ -159,13 +190,8 @@ stampHit(0.35);
 stampHit(1.45);
 riser(1.6, DROP - 1.6, 0.25);
 
-// Progresión en La menor: Am – F – C – G (un acorde por compás de 2 s)
-const chords = [
-  { root: 33, pad: [57, 60, 64] },
-  { root: 29, pad: [57, 60, 65] },
-  { root: 36, pad: [55, 60, 64] },
-  { root: 31, pad: [55, 59, 62] },
-];
+// Progresión del preset (un acorde por compás de 2 s)
+const chords = P.chords;
 for (let bar = 0; DROP + bar * 4 * BEAT < END_FADE + 1; bar++) {
   const t0 = DROP + bar * 4 * BEAT;
   const ch = chords[bar % 4];
@@ -182,6 +208,11 @@ for (let bar = 0; DROP + bar * 4 * BEAT < END_FADE + 1; bar++) {
     bassNote(tb, BEAT * 0.45, ch.root + 12 * 0);
     bassNote(tb + BEAT / 2, BEAT * 0.4, ch.root + 12);
     if (bar % 2 === 1) pluck(tb + BEAT / 4, ch.pad[(b + 1) % 3] + 12, 0.07, b % 2 ? 0.5 : -0.5);
+    if (P.arp) {
+      for (let s = 0; s < 4; s++) {
+        pluck(tb + (s * BEAT) / 4, ch.pad[(b * 4 + s) % 3] + 12 * (s % 2 ? 2 : 1), 0.05, s % 2 ? 0.6 : -0.6);
+      }
+    }
   }
 }
 
@@ -196,6 +227,10 @@ riser(LOGO - 2, 2, 0.28);
 impact(LOGO, 1);
 ding(LOGO + 0.1, 93, 0.12);
 ding(17.2, 88, 0.1); // aparece el botón CTA
+P.toasts.forEach((t, i) => {
+  ding(t, 86 + i * 2, 0.12);
+  ding(t + 0.09, 91 + i * 2, 0.09);
+});
 
 // ── Master: fade final, saturación suave y normalización ──
 let peak = 0;
@@ -227,5 +262,5 @@ for (let i = 0; i < N; i++) {
   buf.writeInt16LE(Math.round(L[i] * norm * 32767), 44 + i * 4);
   buf.writeInt16LE(Math.round(R[i] * norm * 32767), 46 + i * 4);
 }
-writeFileSync(new URL("../public/soundtrack.wav", import.meta.url), buf);
-console.log("public/soundtrack.wav listo");
+writeFileSync(new URL(`../public/${P.out}`, import.meta.url), buf);
+console.log(`public/${P.out} listo`);

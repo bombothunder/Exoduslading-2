@@ -2,9 +2,10 @@
   "name": "exodus-promo-video",
   "private": true,
   "scripts": {
-    "audio": "node scripts/make-audio.mjs",
+    "audio": "node scripts/make-audio.mjs exodus && node scripts/make-audio.mjs digitaiflow",
     "studio": "remotion studio",
-    "render": "remotion render ExodusPromo Renders/exodus-promo.mp4"
+    "render": "remotion render ExodusPromo Renders/exodus-promo.mp4",
+    "render:digitaiflow": "remotion render DigitaiflowPromo Renders/digitaiflow-promo.mp4"
   },
   "dependencies": {
     "@remotion/cli": "^4.0.537",
